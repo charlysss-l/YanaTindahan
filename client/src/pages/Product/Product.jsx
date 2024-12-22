@@ -8,15 +8,14 @@ const Product = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [categories, setCategories] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Current page
-  const itemsPerPage = 5; // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     const fetchAllProduct = async () => {
       try {
         const res = await axios.get("http://localhost:8800/product");
         setProduct(res.data);
-        // Extract unique categories
         const uniqueCategories = [...new Set(res.data.map((prod) => prod.category))];
         setCategories(uniqueCategories);
       } catch (err) {
