@@ -1,8 +1,8 @@
 import express from "express"
 import mysql from "mysql2"
-const app= express()
+import cors from "cors"
 
-app.use(express.json());
+const app= express()
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -10,6 +10,9 @@ const db = mysql.createConnection({
     password:"0070nadz",
     database:"yanatindahan"
 })
+
+app.use(express.json())
+app.use(cors())
 
 app.get("/", (req,res) =>{
     res.json("hello this is the backend")
@@ -24,8 +27,20 @@ app.get("/product", (req,res) =>{
     })
 })
 
+// Fetch Product by ID
+app.get("/product/:id", (req, res) => {
+    const productId = req.params.id;
+    const q = "SELECT * FROM product WHERE idproduct = ?";
+    
+    db.query(q, [productId], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(data[0]); // Send back the first product from the database
+    });
+  });
+
+  
 //CREATE
-app.post("/product", (req, res) => {
+app.post("/create-product", (req, res) => {
     const q = "INSERT INTO product( `name`, `price`, `quantity`, `srp`, `color`, `size`, `category`) VALUES (?)";
     const values = [
         req.body.name,
@@ -42,7 +57,38 @@ app.post("/product", (req, res) => {
     });
 });
 
+//DELETE
+app.delete("/product/:id", (req,res) =>{
+    const productId = req.params.id;
+    const q = "DELETE FROM product WHERE idproduct = ?"
 
+    db.query(q, [productId], (err,data) =>{
+        if (err) return res.status(500).json(err);
+        return res.status(201).json({message: "Product deleted successfully"})
+    })
+})
+
+//UPDATE
+app.put("/update-product/:id", (req,res) =>{
+    const productId = req.params.id;
+    const q =" UPDATE product  SET `name` = ?, `price` = ?, `quantity` = ?, `srp` = ?, `color` = ?, `size` = ?, `category` = ? WHERE idproduct = ?"
+
+    const values = [
+        req.body.name,
+        req.body.price,
+        req.body.quantity,
+        req.body.srp,
+        req.body.color,
+        req.body.size,
+        req.body.category,
+    ]
+
+    
+    db.query(q, [...values, productId], (err,data) =>{
+        if(err) return res.status(500).json(err);
+        return res.status(201).json({message: "Product updated successfully."})
+    })
+})
 app.listen(8800, () =>{
     console.log("Connected to Backend!")
 })
