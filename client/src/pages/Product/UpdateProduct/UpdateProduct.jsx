@@ -1,6 +1,7 @@
-import axios from "axios"
-import { useState, useEffect } from "react"
-import { useNavigate, useLocation } from "react-router-dom"
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import styles from "../CreateProduct/CreateProduct.module.css";
 
 const UpdateProduct = () => {
   const [product, setProduct] = useState({
@@ -45,7 +46,7 @@ const UpdateProduct = () => {
   };
 
   return (
-    <div>
+    <div className={styles.createProductContainer}>
       <h1>Update Product</h1>
       <form>
         <input
@@ -96,14 +97,27 @@ const UpdateProduct = () => {
           onChange={handleChange}
           required
         />
-        <input
-          type="text"
+
+        {/* Dropdown for Category */}
+        <select
           name="category"
           value={product.category}
-          placeholder="Category"
           onChange={handleChange}
           required
-        />
+        >
+          <option value="" disabled>
+            Select Category
+          </option>
+          <option value="Beverages">Beverages</option>
+          <option value="Snacks">Snacks</option>
+          <option value="Canned Goods">Canned Goods</option>
+          <option value="Condiments">Condiments</option>
+          <option value="Cleaning Supplies">Cleaning Supplies</option>
+          <option value="Personal Care">Personal Care</option>
+          <option value="Household Items">Household Items</option>
+          <option value="Other">Other</option>
+        </select>
+
         <button onClick={handleClick}>Update Product</button>
       </form>
     </div>
