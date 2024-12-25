@@ -3,7 +3,6 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid rgba(0, 0, 255, 0.433);
     border-radius: 10px;
 }
 
@@ -17,6 +16,10 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    border: 1px solid #181f39;
+    width: 100%;
+    padding: 50px;
+    border-radius: 10px;
 }
 
 .dateContainer{
